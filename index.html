@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Загрузка</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0e0e0e;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* GIF — на весь экран, тёмный */
+    #bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.45;
+      filter: brightness(0.6);
+    }
+
+    /* Тёмный градиент снизу */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,0,0,0.3)  30%,
+        transparent       60%
+      );
+      z-index: 1;
+    }
+
+    /* Счётчик x/x */
+    #counter {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 10;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.3);
+      transition: color 0.4s;
+    }
+
+    /* Полоска прогресса */
+    #bar-track {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.06);
+      z-index: 10;
+    }
+
+    #bar-fill {
+      height: 100%;
+      width: 0%;
+      background: rgba(255,255,255,0.75);
+      transition: width 0.4s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    ЗАМЕНИ 'loading.gif' на путь к своему GIF.
+    Если GIF не нужен — просто удали тег <img>.
+  -->
+  <img id="bg" src="loading.gif" alt=""
+       onerror="this.style.display='none'">
+
+  <div class="vignette"></div>
+
+  <div id="counter">0 / 0</div>
+
+  <div id="bar-track">
+    <div id="bar-fill"></div>
+  </div>
+
+  <script>
+    var _have = 0, _total = 0;
+
+    function _update(have, total) {
+      if (total <= 0) return;
+      var pct = Math.min(100, (have / total) * 100);
+      document.getElementById('bar-fill').style.width = pct + '%';
+      document.getElementById('counter').innerText = have + ' / ' + total;
+    }
+
+    function GameDetails(sn, su, map, mp, sid, gm) {}
+    function SetFilesTotal(t)       { _total = t; _update(_have, t); }
+    function SetFilesNeeded(n)      {}
+    function SetFilesProgress(h, t) { _have = h; _total = t; _update(h, t); }
+    function DownloadingFile(f)     {}
+    function SetStatusChanged(s)    {}
+
+    // Демо (удали при заливке на сервер)
+    if (!window.gmod) {
+      var step = 0, total = 200;
+      SetFilesTotal(total);
+      setInterval(function () {
+        if (step >= total) return;
+        step++;
+        SetFilesProgress(step, total);
+      }, 40);
+    }
+  </script>
+
+</body>
+</html>
