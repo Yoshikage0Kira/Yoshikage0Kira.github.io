@@ -83,9 +83,13 @@
 
   <div id="counter">0 / 0</div>
 
-  <audio autoplay loop>
+  <audio id="bg-music" autoplay loop>
     <source src="solncenadtwinpeaks.mp3" type="audio/mpeg">
   </audio>
+  
+  <script>
+    document.getElementById('bg-music').volume = 0.3; // от 0.0 до 1.0
+  </script>
 
   <div id="bar-track">
 
